@@ -3,11 +3,17 @@ name: Build Windows Exe
 on:
   push:
     branches: [ "master", "main" ]
+  # 当你在 GitHub 上发布一个新的 Release 时触发
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+    # 给 GITHUB_TOKEN 写权限，以便上传文件到 Release
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -21,10 +27,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
-        # Install dependencies required by your scripts
         pip install openai-whisper torch pysrt requests faster-whisper
-        # Note: tkinter is standard library in Python, usually included.
-        # But for some Windows envs we might just need to ensure standard libs are there.
 
     - name: Build Whisper Tool Optimized
       run: |
@@ -38,9 +41,17 @@ jobs:
       run: |
         pyinstaller --noconsole --onefile --name "SubtitleGenerator" "zimu_shengcheng_toolbat-ok.py"
 
+    # 1. 仍然上传一份到 Artifacts (作为备份)
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: Windows_Executables
         path: dist/*.exe
-        compression-level: 0 # Fast upload
+        compression-level: 0
+
+    # 2. 如果是 Release 触发的，则将 exe 上传到 Release 页面
+    - name: Upload to Release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*.exe
