@@ -1,0 +1,8 @@
+{
+  "output_dir": "/Users/apple/Documents/whisper_outputs",
+  "api_prefer": true,
+  "api_key": "KEY=sk-e9939c73c0a74c91baa28e5e97db836d",
+  "translate_target_mode": "auto",
+  "translate_target_custom": "",
+  "auto_translate_mode": "off"
+}

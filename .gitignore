@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+whisper_env/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Whisper models cache
+.cache/
+
+# Environment variables
+.env
+
+# Temporary files
+*_temp.wav
+*.tmp
+
+# Output files (optional - uncomment if you don't want to track outputs)
+# *.srt
+# *_mute.*
+# *_BILINGUAL_*
+# *_Storyboard.*
