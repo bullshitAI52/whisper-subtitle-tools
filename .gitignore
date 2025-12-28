@@ -42,3 +42,4 @@ env/
 # *_mute.*
 # *_BILINGUAL_*
 # *_Storyboard.*
+*.spec

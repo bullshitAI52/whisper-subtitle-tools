@@ -1,0 +1,46 @@
+name: Build Windows Exe
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        # Install dependencies required by your scripts
+        pip install openai-whisper torch pysrt requests faster-whisper
+        # Note: tkinter is standard library in Python, usually included.
+        # But for some Windows envs we might just need to ensure standard libs are there.
+
+    - name: Build Whisper Tool Optimized
+      run: |
+        pyinstaller --noconsole --onefile --name "WhisperTool_AI" "whisper_tool_optimized_ai.py"
+
+    - name: Build Video Audio Cutter
+      run: |
+        pyinstaller --noconsole --onefile --name "SmartCutter_AI" "AI版video_audio_cutter_1023.py"
+        
+    - name: Build Zimu Generater
+      run: |
+        pyinstaller --noconsole --onefile --name "SubtitleGenerator" "zimu_shengcheng_toolbat-ok.py"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Windows_Executables
+        path: dist/*.exe
+        compression-level: 0 # Fast upload
